@@ -1,8 +1,8 @@
-# Welcome to GitHub
+# Where the Banks At!?
 
-Welcome to GitHub—where millions of developers work together on software. Ready to get started? Let’s learn how this all works by building and publishing your first GitHub Pages website!
+This project will ask whether or not the addition of postal banks will meaningfully increase the access to banking services for low-income communities.
 
-https://docs.google.com/document/d/1l8grA5MtUjmP3g_PPEzQwTkT8oWLZWkSJIlXxwkFLrM/edit
+[link to Google Document!](https://docs.google.com/document/d/1l8grA5MtUjmP3g_PPEzQwTkT8oWLZWkSJIlXxwkFLrM/edit)
 
 ## Repositories
 
