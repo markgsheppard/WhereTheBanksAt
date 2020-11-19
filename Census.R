@@ -1,45 +1,51 @@
 #This code has been designed for replication purposes.
 #For a project that evaluates the effects of a postal banking, on underbanked communities.
 
-
 #Please install and load the appropriate packages.
 #IPUMS: https://data2.nhgis.org/main
 #https://api.census.gov/data/2018/acs/acs5/variables.html
 #API KEY: https://api.census.gov/data/key_signup.html
 #https://walker-data.com/tidycensus/articles/basic-usage.html#geography-in-tidycensus
+
 #install.packages("tidycensus")
 #install.packages("sf")
 #install.packages("tmap")
 #install.packages("usmap")
+#install.packages("censusapi")
+#install.packages("tmaptools")
+#install.packages("leaflet")
+#install.packages("dplyr")
 #census_api_key("10cde4d62bedba8405563e4ac057760b22a03f07")
+
 library(tidycensus)
 library(tidyverse)
-library(ggplot2)
-library(sf)
-library(tmap)
-library(usmap)
 
 acs_data <- get_acs(
-  geography = "state",
+  geography = "county",
   geometry=TRUE,
   year = 2018,
-  survey = "acs5",  #geometry = TRUE,
+  survey = "acs5",
+  output = "wide",
+  shift_geo = TRUE,
   variables = c(  
     "B01003_001", # total population
     "B19013_001" # Median Income
-    ))
+    )) %>% rename("County"=NAME, 
+                  "Total Population"=B01003_001E, 
+                  "Median Income" = B19013_001E) %>%
+  select(-B19013_001M, -B01003_001M)
 
-acs_data_2 <- acs_data %>% 
-  select(-GEOID,-moe) %>%
-  spread(key = variable, value = estimate) %>%
-  rename("state"=NAME, "Total Population"=B01003_001, "Median Income" = B19013_001)
+ggplot(acs_data) +
+  geom_sf(aes(fill= `Median Income`), lwd=0)
 
+#st_join and intercet 
+#Alias #Anti-alias
+#loop for states 
+#Compute average distance
+#zcta
+#Block group is most granular
+#Tract
+#Look up the definitions by geometry
 
-plot_usmap(
-  data = acs_data_2, values = "Median Income", include = c("California", "Idaho", "Nevada", "Oregon", "Washington"), color = "white"
-) + 
-  scale_fill_continuous(
-    low = "white", high = "grey", name = "Income (2018)", label = scales::comma
-  ) + 
-  labs(title = "Western US States", subtitle = "These are the states in the Pacific Timezone.") +
-  theme(legend.position = "right")
+#Distance to middle
+#Regression of number of banks with median income
