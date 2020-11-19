@@ -1,3 +1,8 @@
+#This code has been designed for replication purposes.
+#For a project that evaluates the effects of a postal banking, on underbanked communities.
+
+
+#Please install and load the appropriate packages.
 #IPUMS: https://data2.nhgis.org/main
 #https://api.census.gov/data/2018/acs/acs5/variables.html
 #API KEY: https://api.census.gov/data/key_signup.html
@@ -27,14 +32,14 @@ acs_data <- get_acs(
 acs_data_2 <- acs_data %>% 
   select(-GEOID,-moe) %>%
   spread(key = variable, value = estimate) %>%
-  rename("tate"=NAME, "Total Population"=B01003_001, "Median Income" = B19013_001)
+  rename("state"=NAME, "Total Population"=B01003_001, "Median Income" = B19013_001)
 
 
 plot_usmap(
-  data = acs_data_2, values = "Median Income", include = c("California", "Idaho", "Nevada", "Oregon", "Washinton"), color = "red"
+  data = acs_data_2, values = "Median Income", include = c("California", "Idaho", "Nevada", "Oregon", "Washington"), color = "white"
 ) + 
   scale_fill_continuous(
-    low = "white", high = "red", name = "Income (2018)", label = scales::comma
+    low = "white", high = "grey", name = "Income (2018)", label = scales::comma
   ) + 
   labs(title = "Western US States", subtitle = "These are the states in the Pacific Timezone.") +
   theme(legend.position = "right")
