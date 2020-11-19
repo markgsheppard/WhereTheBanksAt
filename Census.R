@@ -7,7 +7,11 @@
 #API KEY: https://api.census.gov/data/key_signup.html
 #https://walker-data.com/tidycensus/articles/basic-usage.html#geography-in-tidycensus
 
+#install.packages("usethis")
+#install.packages("devtools")
+#install.packages("vctrs")
 #install.packages("tidycensus")
+#install.packages("tidyverse")
 #install.packages("sf")
 #install.packages("tmap")
 #install.packages("usmap")
@@ -15,10 +19,20 @@
 #install.packages("tmaptools")
 #install.packages("leaflet")
 #install.packages("dplyr")
-#census_api_key("10cde4d62bedba8405563e4ac057760b22a03f07")
+#install.packages("rgeos", repos="http://R-Forge.R-project.org", type="source")
+#install.packages("rgdal", repos="http://R-Forge.R-project.org", type="source")
+#install_github("r-spatial/sf", configure.args = "--with-proj-lib=/usr/local/lib/")
+#library(sf)
+#library(usethis)
+#library(devtools)
+#library(vctrs)
 
-library(tidycensus)
+#census_api_key("10cde4d62bedba8405563e4ac057760b22a03f07", overwrite = TRUE, install = TRUE)
+
+
 library(tidyverse)
+library(tidycensus)
+
 
 acs_data <- get_acs(
   geography = "county",
@@ -36,7 +50,7 @@ acs_data <- get_acs(
   select(-B19013_001M, -B01003_001M)
 
 ggplot(acs_data) +
-  geom_sf(aes(fill= `Median Income`), lwd=0)
+  geom_sf(aes(fill= `Median Income`), lwd=0, color = "blue")
 
 #st_join and intercet 
 #Alias #Anti-alias
@@ -49,3 +63,4 @@ ggplot(acs_data) +
 
 #Distance to middle
 #Regression of number of banks with median income
+
