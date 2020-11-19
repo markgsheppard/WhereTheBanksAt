@@ -19,6 +19,7 @@
 #install.packages("tmaptools")
 #install.packages("leaflet")
 #install.packages("dplyr")
+#install.packages("na.tools")
 #install.packages("rgeos", repos="http://R-Forge.R-project.org", type="source")
 #install.packages("rgdal", repos="http://R-Forge.R-project.org", type="source")
 #install_github("r-spatial/sf", configure.args = "--with-proj-lib=/usr/local/lib/")
@@ -29,11 +30,11 @@
 
 #census_api_key("10cde4d62bedba8405563e4ac057760b22a03f07", overwrite = TRUE, install = TRUE)
 
-
+library(na.tools)
 library(tidyverse)
 library(tidycensus)
 
-
+#Download Data
 acs_data <- get_acs(
   geography = "county",
   geometry=TRUE,
@@ -49,6 +50,10 @@ acs_data <- get_acs(
                   "Median Income" = B19013_001E) %>%
   select(-B19013_001M, -B01003_001M)
 
+#Fill NA with Mean
+acs_data$`Median Income` <- na.mean(acs_data$`Median Income`, option = "mean")
+
+#Graph the Map
 ggplot(acs_data) +
   geom_sf(aes(fill= `Median Income`), lwd=0, color = "blue")
 
@@ -63,4 +68,22 @@ ggplot(acs_data) +
 
 #Distance to middle
 #Regression of number of banks with median income
+
+devtools::install_github("dkahle/ggmap")
+library("ggmap")
+register_google(key = "AIzaSyDYYOIZhvSFh6qQG_hiXx950UOYzxgkpjw", write = TRUE)
+
+
+########################TEST CODE
+gc <- geocode("white house, washington dc")
+map <- get_map(gc)
+(bb <- attr(map, "bb"))
+(bbox <- bb2bbox(bb))
+# use the bounding box to get a stamen map
+stamMap <- get_stamenmap(bbox)
+ggmap(map) +
+  geom_point(
+    aes(x = lon, y = lat),
+    data = gc, colour = "red", size = 3
+  )
 
